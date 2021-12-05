@@ -1,7 +1,7 @@
 {
 	"FileVersion": 3,
 	"Version": 1,
-	"VersionName": "1.0",
+	"VersionName": "1.0.0",
 	"FriendlyName": "Advanced Locomotion System Utils",
 	"Description": "This is a plugin that contains utils for the UE4 ALSV4 plugin",
 	"Category": "Animation",
