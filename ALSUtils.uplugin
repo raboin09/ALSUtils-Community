@@ -1,0 +1,24 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0",
+	"FriendlyName": "Advanced Locomotion System Utils",
+	"Description": "This is a plugin that contains utils for the UE4 ALSV4 plugin",
+	"Category": "Animation",
+	"CreatedBy": "James Raboin",
+	"CreatedByURL": "https://github.com/raboin09",
+	"DocsURL": "",
+	"MarketplaceURL": "",
+	"SupportURL": "https://github.com/raboin09/ALSUtils-Community/issues",
+	"CanContainContent": true,
+	"IsBetaVersion": false,
+	"IsExperimentalVersion": false,
+	"Installed": false,
+	"Modules": [
+		{
+			"Name": "ALSUtils",
+			"Type": "Runtime",
+			"LoadingPhase": "PreLoadingScreen"
+		}
+	]
+}
