@@ -18,7 +18,10 @@
 		{
 			"Name": "ALSUtils",
 			"Type": "Runtime",
-			"LoadingPhase": "PreLoadingScreen"
+			"LoadingPhase": "PreLoadingScreen",
+			"WhitelistPlatforms": [
+                 "Win64"
+             ]
 		}
 	]
 }

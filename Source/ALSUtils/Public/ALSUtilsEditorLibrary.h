@@ -14,11 +14,11 @@ class UALSUtilsEditorLibrary : public UBlueprintFunctionLibrary
 	GENERATED_UCLASS_BODY()
 	
 public:
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category="ALSUtils")
 	static void ALSUtils_AddALSNecessitiesToSkeletalMesh(USkeletalMesh* SkeletalMesh);
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category="ALSUtils")
 	static bool ALSUtils_AddRootPhysicsSphere(UPhysicsAsset* InPhysics);
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category="ALSUtils")
 	static bool ALSUtils_AddNewVirtualBonesToSkeleton(USkeleton* InSkeleton);
 	static bool ALSUtils_AddNewVirtualBoneToSkeleton(USkeleton* InSkeleton, const FName& SourceBoneName, const FName& TargetBoneName, const FName& VirtualBoneName);
 };

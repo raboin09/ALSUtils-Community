@@ -1,0 +1,13 @@
+/NOLOGO
+/errorReport:prompt
+/MACHINE:x64
+/SUBSYSTEM:WINDOWS
+/DEF
+/NAME:"UE4Editor-ALSUtils-0001.dll"
+/IGNORE:4221
+/NODEFAULTLIB
+"D:\UE4_Projects\GenestealerProject\Intermediate\Build\Win64\GenestealerProjectEditor\Development\Engine\SharedPCH.Engine.ShadowErrors.h.obj"
+"D:\UE4_Projects\GenestealerProject\Plugins\ALSUtils-Community\Intermediate\Build\Win64\UE4Editor\Development\ALSUtils\Module.ALSUtils.cpp.obj"
+"D:\UE4_Projects\GenestealerProject\Plugins\ALSUtils-Community\Intermediate\Build\Win64\UE4Editor\Development\ALSUtils\Module.ALSUtils.gen.cpp.obj"
+"D:\UE4_Projects\GenestealerProject\Plugins\ALSUtils-Community\Intermediate\Build\Win64\UE4Editor\Development\ALSUtils\Default.rc2.res"
+/OUT:"D:\UE4_Projects\GenestealerProject\Plugins\ALSUtils-Community\Intermediate\Build\Win64\UE4Editor\Development\ALSUtils\UE4Editor-ALSUtils-0001.lib"

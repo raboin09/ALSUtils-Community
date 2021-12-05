@@ -1,0 +1,13 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.ALSUtils.cpp.obj": [
+			"ALSUtils.cpp.obj",
+			"ALSUtilsEditorLibrary.cpp.obj"
+		],
+		"Module.ALSUtils.gen.cpp.obj": [
+			"ALSUtils.init.gen.cpp.obj",
+			"ALSUtilsEditorLibrary.gen.cpp.obj"
+		]
+	}
+}
