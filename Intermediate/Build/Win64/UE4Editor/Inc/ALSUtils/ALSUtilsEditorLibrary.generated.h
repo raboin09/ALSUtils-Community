@@ -19,16 +19,22 @@ class USkeletalMesh;
 #define GenestealerProject_Plugins_ALSUtils_Community_Source_ALSUtils_Public_ALSUtilsEditorLibrary_h_14_SPARSE_DATA
 #define GenestealerProject_Plugins_ALSUtils_Community_Source_ALSUtils_Public_ALSUtilsEditorLibrary_h_14_RPC_WRAPPERS \
  \
+	DECLARE_FUNCTION(execALSUtils_PrepareSkeletonForRetargeting); \
 	DECLARE_FUNCTION(execALSUtils_AddNewVirtualBonesToSkeleton); \
+	DECLARE_FUNCTION(execALSUtils_RetargetALSAnimBPToThisSkeleton); \
 	DECLARE_FUNCTION(execALSUtils_AddRootPhysicsSphere); \
-	DECLARE_FUNCTION(execALSUtils_AddALSNecessitiesToSkeletalMesh);
+	DECLARE_FUNCTION(execALSUtils_AddALSNecessitiesToSkeletalMesh); \
+	DECLARE_FUNCTION(execALSUtils_RetargetALSAnimBPToThisMesh);
 
 
 #define GenestealerProject_Plugins_ALSUtils_Community_Source_ALSUtils_Public_ALSUtilsEditorLibrary_h_14_RPC_WRAPPERS_NO_PURE_DECLS \
  \
+	DECLARE_FUNCTION(execALSUtils_PrepareSkeletonForRetargeting); \
 	DECLARE_FUNCTION(execALSUtils_AddNewVirtualBonesToSkeleton); \
+	DECLARE_FUNCTION(execALSUtils_RetargetALSAnimBPToThisSkeleton); \
 	DECLARE_FUNCTION(execALSUtils_AddRootPhysicsSphere); \
-	DECLARE_FUNCTION(execALSUtils_AddALSNecessitiesToSkeletalMesh);
+	DECLARE_FUNCTION(execALSUtils_AddALSNecessitiesToSkeletalMesh); \
+	DECLARE_FUNCTION(execALSUtils_RetargetALSAnimBPToThisMesh);
 
 
 #define GenestealerProject_Plugins_ALSUtils_Community_Source_ALSUtils_Public_ALSUtilsEditorLibrary_h_14_INCLASS_NO_PURE_DECLS \
