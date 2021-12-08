@@ -22,7 +22,7 @@ void UALSUtilsEditorLibrary::ALSUtils_RetargetALSAnimBPToThisMesh(USkeletalMesh*
 	}
 
 	ALSUtils_AddALSNecessitiesToSkeletalMesh(InSkeletalMesh);
-	ALSUtils_RetargetALSAnimBPToThisSkeleton(InSkeletalMesh->GetSkeleton(), OutputFolderPath);
+	ALSUtils_RetargetALSAnimBPToThisSkeleton(InSkeletalMesh->Skeleton, OutputFolderPath);
 	ALS_UTILS_POPUP("SUCCESS: The newly retargeted AnimBP and animations are located at " + OutputFolderPath);
 }
 
@@ -34,7 +34,7 @@ void UALSUtilsEditorLibrary::ALSUtils_AddALSNecessitiesToSkeletalMesh(USkeletalM
 	}
 
 	bool bSuccess = true;
-	if(USkeleton* InSkeleton =  SkeletalMesh->GetSkeleton())
+	if(USkeleton* InSkeleton =  SkeletalMesh->Skeleton)
 	{
 		bSuccess = bSuccess && ALSUtils_AddNewVirtualBonesToSkeleton(InSkeleton);
 		bSuccess = bSuccess && ALSUtils_PrepareSkeletonForRetargeting(InSkeleton);
@@ -44,7 +44,7 @@ void UALSUtilsEditorLibrary::ALSUtils_AddALSNecessitiesToSkeletalMesh(USkeletalM
 		ALS_UTILS_POPUP("ERROR: No valid skeleton could be found for " + SkeletalMesh->GetName());
 	}	
 	
-	if(UPhysicsAsset* InPhysicsAsset = SkeletalMesh->GetPhysicsAsset())
+	if(UPhysicsAsset* InPhysicsAsset = SkeletalMesh->PhysicsAsset)
 	{
 		bSuccess = bSuccess && ALSUtils_AddRootPhysicsSphere(InPhysicsAsset);
 	} else
@@ -107,6 +107,7 @@ void UALSUtilsEditorLibrary::ALSUtils_RetargetALSAnimBPToThisSkeleton(USkeleton*
 		if(!ALS_AnimBP)
 		{
 			ALS_UTILS_POPUP("ERROR: Could not find ALS_AnimBP in your Plugins folder located at either AdvancedLocomotionV4/CharacterAssets/MannequinSkeleton/ALS_AnimBP.ALS_AnimBP OR /ALSV4_CPP/AdvancedLocomotionV4/CharacterAssets/MannequinSkeleton/ALS_AnimBP.ALS_AnimBP");
+			return;
 		}
 	}
 	const TArray<UObject*> AnimBPObjs = { ALS_AnimBP };
@@ -116,7 +117,7 @@ void UALSUtilsEditorLibrary::ALSUtils_RetargetALSAnimBPToThisSkeleton(USkeleton*
 	DuplicationRule.FolderPath = OutputFolderPath.IsEmpty() ? "/Game/" : OutputFolderPath;
 	const EditorAnimUtils::FNameDuplicationRule* ConstDuplicationRuleObj = &DuplicationRule;
 	RetargetAnimations(ALS_AnimBP->TargetSkeleton, InSkeleton, RetargetContext, false, ConstDuplicationRuleObj);
-	ALS_UTILS_POPUP("Success!")
+	ALS_UTILS_POPUP("Success! The ALS_AnimBP and its animations were retargeted to " + InSkeleton->GetName() + " and are now located at " + OutputFolderPath);
 }
 
 bool UALSUtilsEditorLibrary::ALSUtils_AddNewVirtualBonesToSkeleton(USkeleton* InSkeleton)
