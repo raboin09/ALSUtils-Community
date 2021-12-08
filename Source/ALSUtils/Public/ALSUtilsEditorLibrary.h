@@ -15,19 +15,19 @@ class UALSUtilsEditorLibrary : public UBlueprintFunctionLibrary
 	
 public:
 	UFUNCTION(BlueprintCallable, Category="ALSUtils|SkeletalMesh|Retarget")
-	static void ALSUtils_RetargetALSAnimBPToThisMesh(USkeletalMesh* InSkeletalMesh, const FString& OutputFolderPath);
+	static void ALSUtils_RetargetALSAnimBPToThisMesh(UObject* InSkeletalMeshObj, const FString& OutputFolderPath);
 	UFUNCTION(BlueprintCallable, Category="ALSUtils|SkeletalMesh|Necessity")
-	static void ALSUtils_AddALSNecessitiesToSkeletalMesh(USkeletalMesh* InSkeletalMesh);
+	static void ALSUtils_AddALSNecessitiesToSkeletalMesh(UObject* InSkeletalMeshObj);
 	
 	UFUNCTION(BlueprintCallable, Category="ALSUtils|PhysicsAsset|Necessity")
-	static bool ALSUtils_AddRootPhysicsSphere(UPhysicsAsset* InPhysics);
+	static bool ALSUtils_AddRootPhysicsSphere(UObject* InPhysics);
 
 	UFUNCTION(BlueprintCallable, Category="ALSUtils|Skeleton|Retarget")
-	static void ALSUtils_RetargetALSAnimBPToThisSkeleton(USkeleton* InSkeleton, const FString& OutputFolderPath);
+	static void ALSUtils_RetargetALSAnimBPToThisSkeleton(UObject* InSkeletonObj, const FString& OutputFolderPath);
 	UFUNCTION(BlueprintCallable, Category="ALSUtils|Skeleton|Necessity")
-	static bool ALSUtils_AddNewVirtualBonesToSkeleton(USkeleton* InSkeleton);
+	static bool ALSUtils_AddNewVirtualBonesToSkeleton(UObject* InSkeletonObj);
 	UFUNCTION(BlueprintCallable, Category="ALSUtils|Skeleton|Necessity")
-	static bool ALSUtils_PrepareSkeletonForRetargeting(USkeleton* InSkeleton);
+	static bool ALSUtils_PrepareSkeletonForRetargeting(UObject* InSkeletonObj);
 
 	static bool ALSUtils_SetRetargetingRigToDefaultHumanoid(USkeleton* InSkeleton);
 	static bool ALSUtils_SetBoneTranslationRetargeting(USkeleton* InSkeleton, const FName& BoneName, EBoneTranslationRetargetingMode::Type TranslationRetargetingMode);

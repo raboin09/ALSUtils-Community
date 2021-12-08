@@ -13,8 +13,9 @@ UALSUtilsEditorLibrary::UALSUtilsEditorLibrary(const FObjectInitializer& ObjectI
 
 }
 
-void UALSUtilsEditorLibrary::ALSUtils_RetargetALSAnimBPToThisMesh(USkeletalMesh* InSkeletalMesh, const FString& OutputFolderPath)
+void UALSUtilsEditorLibrary::ALSUtils_RetargetALSAnimBPToThisMesh(UObject* InSkeletalMeshObj, const FString& OutputFolderPath)
 {
+	USkeletalMesh* InSkeletalMesh = Cast<USkeletalMesh>(InSkeletalMeshObj);
 	if(!InSkeletalMesh)
 	{
 		ALS_UTILS_POPUP("ERROR: This skeletal mesh is not valid");
@@ -26,8 +27,9 @@ void UALSUtilsEditorLibrary::ALSUtils_RetargetALSAnimBPToThisMesh(USkeletalMesh*
 	ALS_UTILS_POPUP("SUCCESS: The newly retargeted AnimBP and animations are located at " + OutputFolderPath);
 }
 
-void UALSUtilsEditorLibrary::ALSUtils_AddALSNecessitiesToSkeletalMesh(USkeletalMesh* SkeletalMesh)
+void UALSUtilsEditorLibrary::ALSUtils_AddALSNecessitiesToSkeletalMesh(UObject* SkeletalMeshObj)
 {
+	USkeletalMesh* SkeletalMesh = Cast<USkeletalMesh>(SkeletalMeshObj);
 	if(!SkeletalMesh)
 	{
 		return;
@@ -62,8 +64,9 @@ void UALSUtilsEditorLibrary::ALSUtils_AddALSNecessitiesToSkeletalMesh(USkeletalM
 	}
 }
 
-bool UALSUtilsEditorLibrary::ALSUtils_AddRootPhysicsSphere(UPhysicsAsset* InPhysics)
+bool UALSUtilsEditorLibrary::ALSUtils_AddRootPhysicsSphere(UObject* InPhysicsObj)
 {
+	UPhysicsAsset* InPhysics = Cast<UPhysicsAsset>(InPhysicsObj);
 	if(!InPhysics)
 	{
 		ALS_UTILS_POPUP("ERROR: This physics asset is not valid");
@@ -93,8 +96,9 @@ bool UALSUtilsEditorLibrary::ALSUtils_AddRootPhysicsSphere(UPhysicsAsset* InPhys
 	return true;
 }
 
-void UALSUtilsEditorLibrary::ALSUtils_RetargetALSAnimBPToThisSkeleton(USkeleton* InSkeleton, const FString& OutputFolderPath)
+void UALSUtilsEditorLibrary::ALSUtils_RetargetALSAnimBPToThisSkeleton(UObject* InSkeletonObj, const FString& OutputFolderPath)
 {
+	USkeleton* InSkeleton = Cast<USkeleton>(InSkeletonObj);
 	if(!InSkeleton)
 	{
 		ALS_UTILS_POPUP("ERROR: This skeleton is not valid");
@@ -119,8 +123,9 @@ void UALSUtilsEditorLibrary::ALSUtils_RetargetALSAnimBPToThisSkeleton(USkeleton*
 	ALS_UTILS_POPUP("Success!")
 }
 
-bool UALSUtilsEditorLibrary::ALSUtils_AddNewVirtualBonesToSkeleton(USkeleton* InSkeleton)
+bool UALSUtilsEditorLibrary::ALSUtils_AddNewVirtualBonesToSkeleton(UObject* InSkeletonObj)
 {
+	USkeleton* InSkeleton = Cast<USkeleton>(InSkeletonObj);
 	if(!InSkeleton)
 	{
 		ALS_UTILS_POPUP("ERROR: This skeleton is not valid");
@@ -183,27 +188,9 @@ bool UALSUtilsEditorLibrary::ALSUtils_AddNewVirtualBonesToSkeleton(USkeleton* In
 	return bReturnSuccess;
 }
 
-bool UALSUtilsEditorLibrary::ALSUtils_SetRetargetingRigToDefaultHumanoid(USkeleton* InSkeleton)
+bool UALSUtilsEditorLibrary::ALSUtils_PrepareSkeletonForRetargeting(UObject* InSkeletonObj)
 {
-	if(!InSkeleton)
-	{
-		ALS_UTILS_POPUP("ERROR: This skeleton is not valid");
-		return false;
-	}
-
-	InSkeleton->Modify();
-	URig* EngineHumanoidRig = LoadObject<URig>(nullptr, TEXT("/Engine/EngineMeshes/Humanoid.Humanoid"), nullptr, LOAD_None, nullptr);
-	if(!EngineHumanoidRig)
-	{
-		ALS_UTILS_POPUP("ERROR: The default Engine Humanoid Rig located at path /Engine/EngineMeshes/Humanoid.Humanoid is not valid. Aborting!");
-		return false;
-	}
-	InSkeleton->SetRigConfig(EngineHumanoidRig);
-	return true;
-}
-
-bool UALSUtilsEditorLibrary::ALSUtils_PrepareSkeletonForRetargeting(USkeleton* InSkeleton)
-{
+	USkeleton* InSkeleton = Cast<USkeleton>(InSkeletonObj);
 	if(!InSkeleton)
 	{
 		ALS_UTILS_POPUP("ERROR: This skeleton is not valid");
@@ -257,6 +244,25 @@ bool UALSUtilsEditorLibrary::ALSUtils_PrepareSkeletonForRetargeting(USkeleton* I
 		FAssetNotifications::SkeletonNeedsToBeSaved(InSkeleton);
 	}
 	return bSuccess;
+}
+
+bool UALSUtilsEditorLibrary::ALSUtils_SetRetargetingRigToDefaultHumanoid(USkeleton* InSkeleton)
+{
+	if(!InSkeleton)
+	{
+		ALS_UTILS_POPUP("ERROR: This skeleton is not valid");
+		return false;
+	}
+
+	InSkeleton->Modify();
+	URig* EngineHumanoidRig = LoadObject<URig>(nullptr, TEXT("/Engine/EngineMeshes/Humanoid.Humanoid"), nullptr, LOAD_None, nullptr);
+	if(!EngineHumanoidRig)
+	{
+		ALS_UTILS_POPUP("ERROR: The default Engine Humanoid Rig located at path /Engine/EngineMeshes/Humanoid.Humanoid is not valid. Aborting!");
+		return false;
+	}
+	InSkeleton->SetRigConfig(EngineHumanoidRig);
+	return true;
 }
 
 bool UALSUtilsEditorLibrary::ALSUtils_SetBoneTranslationRetargeting(USkeleton* InSkeleton, const FName& BoneName, EBoneTranslationRetargetingMode::Type TranslationRetargetingMode)

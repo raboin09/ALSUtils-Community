@@ -8,9 +8,7 @@
 #include "UObject/ScriptMacros.h"
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
-class USkeleton;
-class UPhysicsAsset;
-class USkeletalMesh;
+class UObject;
 #ifdef ALSUTILS_ALSUtilsEditorLibrary_generated_h
 #error "ALSUtilsEditorLibrary.generated.h already included, missing '#pragma once' in ALSUtilsEditorLibrary.h"
 #endif
