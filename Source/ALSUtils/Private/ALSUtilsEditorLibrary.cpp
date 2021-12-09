@@ -3,9 +3,11 @@
 #include "ALSUtilsEditorLibrary.h"
 #include "Animation/Rig.h"
 #include "Animation/AnimBlueprint.h"
+#include "ReferenceSkeleton.h"
 #include "Developer/AssetTools/Private/AssetTypeActions/AssetTypeActions_AnimBlueprint.h"
 #include "AssetNotifications.h"
 #include "ObjectEditorUtils.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 UALSUtilsEditorLibrary::UALSUtilsEditorLibrary(const FObjectInitializer& ObjectInitializer)
 : Super(ObjectInitializer)
@@ -21,7 +23,6 @@ void UALSUtilsEditorLibrary::ALSUtils_RetargetALSAnimBPToThisMesh(UObject* InSke
 		ALS_UTILS_POPUP("ERROR: This skeletal mesh is not valid");
 		return;
 	}
-
 	ALSUtils_AddALSNecessitiesToSkeletalMesh(InSkeletalMesh);
 	ALSUtils_RetargetALSAnimBPToThisSkeleton(InSkeletalMesh->GetSkeleton(), OutputFolderPath);
 	ALS_UTILS_POPUP("SUCCESS: The newly retargeted AnimBP and animations are located at " + OutputFolderPath);
@@ -38,8 +39,8 @@ void UALSUtilsEditorLibrary::ALSUtils_AddALSNecessitiesToSkeletalMesh(UObject* S
 	bool bSuccess = true;
 	if(USkeleton* InSkeleton =  SkeletalMesh->GetSkeleton())
 	{
-		bSuccess = bSuccess && ALSUtils_AddNewVirtualBonesToSkeleton(InSkeleton);
 		bSuccess = bSuccess && ALSUtils_PrepareSkeletonForRetargeting(InSkeleton);
+		bSuccess = bSuccess && ALSUtils_AddNewVirtualBonesToSkeleton(InSkeleton);
 	} else
 	{
 		bSuccess = false;
@@ -103,6 +104,14 @@ void UALSUtilsEditorLibrary::ALSUtils_RetargetALSAnimBPToThisSkeleton(UObject* I
 	{
 		ALS_UTILS_POPUP("ERROR: This skeleton is not valid");
 	}
+
+	bool bPathValid = true;
+	const FString DefaultOutPath = "/Game/ALSUtils";
+	if(!OutputFolderPath.StartsWith("/Game/") || OutputFolderPath.IsEmpty())
+	{
+		ALS_UTILS_POPUP("ERROR: The given output path of " + OutputFolderPath + " was not valid. File paths MUST start with /Game/ (your project's Content folder). Changing output to " + DefaultOutPath);
+		bPathValid = false;
+	}
 	
 	UAnimBlueprint* ALS_AnimBP = LoadObject<UAnimBlueprint>(nullptr, TEXT("AnimBlueprint'/ALSV4_CPP/AdvancedLocomotionV4/CharacterAssets/MannequinSkeleton/ALS_AnimBP.ALS_AnimBP'"));
 	if(!ALS_AnimBP)
@@ -111,16 +120,17 @@ void UALSUtilsEditorLibrary::ALSUtils_RetargetALSAnimBPToThisSkeleton(UObject* I
 		if(!ALS_AnimBP)
 		{
 			ALS_UTILS_POPUP("ERROR: Could not find ALS_AnimBP in your Plugins folder located at either AdvancedLocomotionV4/CharacterAssets/MannequinSkeleton/ALS_AnimBP.ALS_AnimBP OR /ALSV4_CPP/AdvancedLocomotionV4/CharacterAssets/MannequinSkeleton/ALS_AnimBP.ALS_AnimBP");
+			return;
 		}
 	}
 	const TArray<UObject*> AnimBPObjs = { ALS_AnimBP };
 	const auto AnimBlueprints = FObjectEditorUtils::GetTypedWeakObjectPtrs<UObject>(AnimBPObjs);
 	EditorAnimUtils::FAnimationRetargetContext RetargetContext(AnimBlueprints, true, true);
 	EditorAnimUtils::FNameDuplicationRule DuplicationRule = EditorAnimUtils::FNameDuplicationRule();
-	DuplicationRule.FolderPath = OutputFolderPath.IsEmpty() ? "/Game/" : OutputFolderPath;
+	DuplicationRule.FolderPath = bPathValid ? OutputFolderPath : DefaultOutPath;
 	const EditorAnimUtils::FNameDuplicationRule* ConstDuplicationRuleObj = &DuplicationRule;
 	RetargetAnimations(ALS_AnimBP->TargetSkeleton, InSkeleton, RetargetContext, false, ConstDuplicationRuleObj);
-	ALS_UTILS_POPUP("Success!")
+	ALS_UTILS_POPUP("Success! The skeleton " + InSkeleton->GetName() + " has a new AnimBP at " + OutputFolderPath)
 }
 
 bool UALSUtilsEditorLibrary::ALSUtils_AddNewVirtualBonesToSkeleton(UObject* InSkeletonObj)
@@ -219,25 +229,12 @@ bool UALSUtilsEditorLibrary::ALSUtils_PrepareSkeletonForRetargeting(UObject* InS
 	{
 		ALSUtils_SetBoneTranslationRetargeting(InSkeleton, InSkeleton->GetReferenceSkeleton().GetBoneName(BoneIndex), EBoneTranslationRetargetingMode::Skeleton);
 	}
-
-	// Set ik bones to Animation
-	const FName ik_foot_l = FName(TEXT("ik_foot_l"));
-	bSuccess = bSuccess && ALSUtils_SetBoneTranslationRetargeting(InSkeleton, ik_foot_l, EBoneTranslationRetargetingMode::Animation);
-	
-	const FName ik_foot_r = FName(TEXT("ik_foot_r"));
-	bSuccess = bSuccess && ALSUtils_SetBoneTranslationRetargeting(InSkeleton, ik_foot_r, EBoneTranslationRetargetingMode::Animation);
 	
 	const FName ik_foot_root = FName(TEXT("ik_foot_root"));
 	bSuccess = bSuccess && ALSUtils_SetBoneTranslationRetargeting(InSkeleton, ik_foot_root, EBoneTranslationRetargetingMode::Animation);
 	
-	const FName ik_hand_l = FName(TEXT("ik_hand_l"));
-	bSuccess = bSuccess && ALSUtils_SetBoneTranslationRetargeting(InSkeleton, ik_hand_l, EBoneTranslationRetargetingMode::Animation);
-	
-	const FName ik_hand_r = FName(TEXT("ik_hand_r"));
-	bSuccess = bSuccess && ALSUtils_SetBoneTranslationRetargeting(InSkeleton, ik_hand_r, EBoneTranslationRetargetingMode::Animation);
-	
-	const FName ik_hand_gun = FName(TEXT("ik_hand_gun"));
-	bSuccess = bSuccess && ALSUtils_SetBoneTranslationRetargeting(InSkeleton, ik_hand_gun, EBoneTranslationRetargetingMode::Animation);
+	const FName ik_hand_root = FName(TEXT("ik_hand_root"));
+	bSuccess = bSuccess && ALSUtils_SetBoneTranslationRetargeting(InSkeleton, ik_hand_root, EBoneTranslationRetargetingMode::Animation);
 	
 	if(bSuccess)
 	{
@@ -268,7 +265,7 @@ bool UALSUtilsEditorLibrary::ALSUtils_SetRetargetingRigToDefaultHumanoid(USkelet
 bool UALSUtilsEditorLibrary::ALSUtils_SetBoneTranslationRetargeting(USkeleton* InSkeleton, const FName& BoneName, EBoneTranslationRetargetingMode::Type TranslationRetargetingMode)
 {
 	const int32 BoneIndex = InSkeleton->GetReferenceSkeleton().FindBoneIndex(BoneName);
-	InSkeleton->SetBoneTranslationRetargetingMode(BoneIndex, TranslationRetargetingMode);
+	InSkeleton->SetBoneTranslationRetargetingMode(BoneIndex, TranslationRetargetingMode, true);
 	return true;
 }
 
@@ -277,6 +274,20 @@ bool UALSUtilsEditorLibrary::ALSUtils_AddNewVirtualBoneToSkeleton(USkeleton* InS
 	if(!InSkeleton)
 	{
 		ALS_UTILS_POPUP("ERROR: This skeleton is not valid");
+		return false;
+	}
+	
+	const int32 SourceIndex = InSkeleton->GetReferenceSkeleton().FindBoneIndex(SourceBoneName);
+	if(SourceIndex == INDEX_NONE)
+	{
+		ALS_UTILS_POPUP("ERROR: This skeleton does not contain the bone " + SourceBoneName.ToString());
+		return false;
+	}
+	
+	const int32 TargetIndex = InSkeleton->GetReferenceSkeleton().FindBoneIndex(TargetBoneName);
+	if(TargetIndex == INDEX_NONE)
+	{
+		ALS_UTILS_POPUP("ERROR: This skeleton does not contain the bone " + TargetBoneName.ToString());
 		return false;
 	}
 	// TempVBName will the new VB name when UE4 creates the VB. We will use that new VB name when we rename the VB to our own VB name.

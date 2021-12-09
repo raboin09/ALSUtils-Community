@@ -40,3 +40,6 @@ C:\UnrealEngine\UE_4.27\Engine\Source\Editor\UnrealEd\Public\Toolkits/SimpleAsse
 C:\UnrealEngine\UE_4.27\Engine\Source\Editor\UnrealEd\Public\EditorAnimUtils.h
 C:\UnrealEngine\UE_4.27\Engine\Source\Editor\UnrealEd\Public\AssetNotifications.h
 C:\UnrealEngine\UE_4.27\Engine\Source\Runtime\Engine\Public\ObjectEditorUtils.h
+C:\UnrealEngine\UE_4.27\Engine\Source\Runtime\Engine\Classes\Kismet/KismetSystemLibrary.h
+C:\UnrealEngine\UE_4.27\Engine\Source\Runtime\CoreUObject\Public\UObject/PropertyAccessUtil.h
+C:\UnrealEngine\UE_4.27\Engine\Intermediate\Build\Win64\UE4Editor\Inc\Engine\KismetSystemLibrary.generated.h
